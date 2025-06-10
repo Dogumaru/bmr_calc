@@ -2,10 +2,17 @@ import streamlit as st
 
 st.title("BMR and TDEE Calculator")
 
-age = st.number_input("Enter age in years:", min_value=0, max_value=120, step=1)
-weight = st.number_input("Enter weight in kilograms (kg):", min_value=0.1, format="%.2f")
-height = st.number_input("Enter height in centimeters (cm):", min_value=0.1, format="%.2f")
-gender = st.selectbox("Gender:", ["male", "female"])
+# Organize inputs in two columns
+col1, col2 = st.columns(2)
+
+with col1:
+    age = st.number_input("Enter age in years:", min_value=0, max_value=120, step=1)
+    weight = st.number_input("Enter weight in kilograms (kg):", min_value=0.1, format="%.2f")
+    
+with col2:
+    height = st.number_input("Enter height in centimeters (cm):", min_value=0.1, format="%.2f")
+    gender = st.selectbox("Gender:", ["male", "female"])
+
 activity_level = st.selectbox("Activity level:", ["sedentary", "light", "moderate", "active"])
 goal = st.selectbox("Goal:", ["maintain", "lose", "gain"])
 
@@ -30,6 +37,9 @@ if st.button("Calculate"):
     else:
         adjusted_tdee = tdee
 
-    st.write(f"**Estimated BMR:** {bmr:.2f} calories/day")
-    st.write(f"**Estimated TDEE:** {tdee:.2f} calories/day")
-    st.write(f"**Calorie goal to {goal} weight:** {adjusted_tdee:.2f} calories/day")
+    # Put results in a container for visual grouping
+    with st.container():
+        st.subheader("Results")
+        st.write(f"**Estimated BMR:** {bmr:.2f} calories/day")
+        st.write(f"**Estimated TDEE:** {tdee:.2f} calories/day")
+        st.write(f"**Calorie goal to {goal} weight:** {adjusted_tdee:.2f} calories/day")
